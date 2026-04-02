@@ -1,0 +1,132 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "PhoneValue API (MVP)",
+        "version": "1.0.0",
+        "description": "API specification for the PhoneValue MVP. Supports ALL and EUR currencies."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5000/api",
+            "description": "Local Flask backend"
+        }
+    ],
+    "paths": {
+        "/models": {
+            "get": {
+                "summary": "List supported phone models",
+                "responses": {
+                    "200": {
+                        "description": "A list of models",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelList"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evaluate": {
+            "post": {
+                "summary": "Calculate device value",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValuationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful valuation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValuationResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ValuationRequest": {
+                "type": "object",
+                "required": [
+                    "modelId",
+                    "storage",
+                    "batteryHealth",
+                    "damageLevel"
+                ],
+                "properties": {
+                    "modelId": {
+                        "type": "string"
+                    },
+                    "storage": {
+                        "type": "string"
+                    },
+                    "batteryHealth": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100
+                    },
+                    "damageLevel": {
+                        "type": "integer"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "enum": [
+                            "ALL",
+                            "EUR"
+                        ]
+                    }
+                }
+            },
+            "ValuationResponse": {
+                "type": "object",
+                "properties": {
+                    "estimatedMin": {
+                        "type": "number"
+                    },
+                    "estimatedMax": {
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ModelList": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "brand": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: PhoneValue API (MVP)
+  version: 1.0.0
+  description: |
+    API specification for the PhoneValue MVP.
+    Covers model searching, condition-based valuation, and shop discovery.
+    Supports dual currency: Albanian Lek (ALL) and Euro (EUR).
+
+servers:
+  - url: http://localhost:5000/api
+    description: Local Flask backend
+
+tags:
+  - name: Valuation
+  - name: Shops
+  - name: Catalog
+
+paths:
+  /models:
+    get:
+      tags: [Catalog]
+      summary: List supported phone models
+      parameters:
+        - name: brand
+          in: query
+          description: Filter by brand (e.g., Apple, Samsung)
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: Search term for model name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+
+  /evaluate:
+    post:
+      tags: [Valuation]
+      summary: Calculate device value based on condition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValuationRequest'
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValuationResponse'
+
+  /shops:
+    get:
+      tags: [Shops]
+      summary: Get shop offers for a valuation
+      parameters:
+        - name: modelId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: currency
+          in: query
+          schema:
+            type: string
+            enum: [ALL, EUR]
+            default: ALL
+      responses:
+        '200':
+          description: List of shop offers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopOfferList'
+
+components:
+  schemas:
+    ValuationRequest:
+      type: object
+      required: [modelId, storage, batteryHealth, damageLevel]
+      properties:
+        modelId:
+          type: string
+        storage:
+          type: string
+          example: "128GB"
+        batteryHealth:
+          type: integer
+          minimum: 0
+          maximum: 100
+        damageLevel:
+          type: integer
+          description: 1 (Mint) to 5 (Broken)
+        currency:
+          type: string
+          enum: [ALL, EUR]
+
+    ValuationResponse:
+      type: object
+      properties:
+        estimatedMin:
+          type: number
+        estimatedMax:
+          type: number
+        currency:
+          type: string
+        valuationId:
+          type: string
+
+    ModelList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              brand: { type: string }
+              name: { type: string }
+
+    ShopOfferList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              shopName: { type: string }
+              offerPrice: { type: number }
+              location: { type: string }
+              contact: { type: string }
