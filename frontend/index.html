@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhoneValue - Get Your Device's Worth</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="container">
+            <h1 class="logo" id="btn-logo" style="cursor: pointer;">Phone<span>Value</span></h1>
+            <div class="header-actions">
+                <div class="currency-toggle" id="currency-toggle-container" style="display: none;">
+                    <button class="currency-btn active" data-currency="ALL">ALL</button>
+                    <button class="currency-btn" data-currency="EUR">EUR</button>
+                </div>
+                <div class="auth-buttons" id="auth-buttons">
+                    <button class="btn-link" id="btn-show-login">Login</button>
+                    <button class="btn-outline" id="btn-show-signup">Sign Up</button>
+                </div>
+                <div class="user-menu" id="user-menu" style="display: none;">
+                    <span id="user-name-display" style="margin-right: 12px; font-weight: 500;"></span>
+                    <button class="btn-outline" id="btn-logout">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" id="app-container">
+        <!-- Screens will be dynamically injected here by JS -->
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2026 PhoneValue MVP</p>
+        </div>
+    </footer>
+
+    <!-- Templates -->
+    <template id="tpl-landing">
+        <div class="screen landing-screen fade-in">
+            <div class="landing-grid">
+                <div class="hero-content">
+                    <h2>Unlock the True Value of Your Device</h2>
+                    <p>Get instant AI-driven valuations and connect with verified local shops offering the best prices.</p>
+                    
+                    <div class="search-box">
+                        <input type="text" id="model-search" placeholder="Search your phone (e.g. iPhone 17)" autocomplete="off">
+                        <div id="search-results" class="search-results"></div>
+                    </div>
+                    <div class="quick-links">
+                        <span style="font-size: 0.875rem; color: var(--text-secondary);">Trending:</span>
+                        <div class="chip-group" id="popular-models">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image-wrapper">
+                    <img src="assets/hero.png" alt="Futuristic Smartphone" class="hero-image">
+                </div>
+            </div>
+
+            <div class="features-section">
+                <div class="feature-card">
+                    <h4>Instant Valuation</h4>
+                    <p>Our algorithm calculates real-time market worth based on live data.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Verified Shops</h4>
+                    <p>Connect securely with premium buyers across the local network.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>100% Free</h4>
+                    <p>No hidden fees. Get your price and sell on your own terms.</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-questionnaire">
+        <div class="screen questionnaire-screen fade-in">
+            <button class="btn-back" id="btn-back-landing">&larr; Back to Search</button>
+            <h2 id="q-model-name">Phone Model</h2>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="q-progress"></div>
+            </div>
+            
+            <div id="q-step-1" class="q-step active">
+                <h3>Step 1: Storage Capacity</h3>
+                <div class="options-grid" id="storage-options">
+                    <button class="option-card" data-value="128GB">128 GB</button>
+                    <button class="option-card" data-value="256GB">256 GB</button>
+                    <button class="option-card" data-value="512GB">512 GB</button>
+                    <button class="option-card" data-value="1TB">1 TB</button>
+                </div>
+            </div>
+
+            <div id="q-step-2" class="q-step">
+                <h3>Step 2: Battery Health</h3>
+                <div class="battery-input">
+                    <label for="battery-range">Battery Capacity: <span id="battery-val">90</span>%</label>
+                    <input type="range" id="battery-range" min="50" max="100" value="90">
+                </div>
+                <button class="btn-primary mt-4" id="btn-next-step2">Next Step</button>
+            </div>
+
+            <div id="q-step-3" class="q-step">
+                <h3>Step 3: Physical Condition</h3>
+                <div class="options-grid vertical" id="damage-options">
+                    <button class="option-card" data-value="1">
+                        <strong>Mint</strong>
+                        <p>Like new, no scratches.</p>
+                    </button>
+                    <button class="option-card" data-value="2">
+                        <strong>Good</strong>
+                        <p>Minor wear and tear.</p>
+                    </button>
+                    <button class="option-card" data-value="3">
+                        <strong>Fair</strong>
+                        <p>Visible scratches, dents.</p>
+                    </button>
+                    <button class="option-card" data-value="4">
+                        <strong>Cracked</strong>
+                        <p>Cracked screen or back.</p>
+                    </button>
+                    <button class="option-card" data-value="5">
+                        <strong>Broken</strong>
+                        <p>Does not turn on or major damage.</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-results">
+        <div class="screen results-screen fade-in">
+            <button class="btn-back" id="btn-back-q">&larr; Recalculate</button>
+            <div class="valuation-card">
+                <h2>Estimated Market Value</h2>
+                <div class="price-range">
+                    <span id="price-min">--</span> - <span id="price-max">--</span> <span class="currency-label">ALL</span>
+                </div>
+                <p class="condition-summary" id="res-summary">iPhone 15 • 128GB • 90% Battery • Mint</p>
+            </div>
+
+            <div class="shop-list-container">
+                <h3>Local Shop Offers</h3>
+                <div id="shop-list" class="shop-list">
+                    <div class="loader">Loading offers...</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-auth">
+        <div class="screen auth-screen fade-in">
+            <div class="auth-card">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-target="login">Login</button>
+                    <button class="auth-tab" data-target="signup">Sign Up</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="form-login" class="auth-form active">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary mt-4">Login</button>
+                    <div class="auth-error" id="login-error"></div>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="form-signup" class="auth-form">
+                    <div class="form-group">
+                        <label>I am a...</label>
+                        <select id="signup-role" required style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--border-color);">
+                            <option value="seller">Person selling a phone</option>
+                            <option value="shop">Business willing to buy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name / Shop Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary mt-4">Create Account</button>
+                    <div class="auth-error" id="signup-error"></div>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-shop-dashboard">
+        <div class="screen shop-screen fade-in">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 id="shop-welcome" style="font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(90deg, var(--accent-color), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Welcome back, Shop!</h2>
+                <p style="color: var(--text-secondary); font-size: 1.125rem;">You are logged in as a business.</p>
+            </div>
+            <div class="valuation-card" style="text-align: left; padding: 32px;">
+                <h3 style="font-size: 1.5rem; color: var(--text-primary);">Incoming Leads</h3>
+                <p style="color: var(--text-secondary); margin-top: 16px; font-size: 1rem;">
+                    View the list of phones that users have evaluated and want to sell to your shop.
+                </p>
+                <button class="btn-primary mt-4" id="btn-view-inventory" style="max-width: 300px;">View Inventory Demands</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-shop-inventory">
+        <div class="screen inventory-screen fade-in">
+            <button class="btn-back" id="btn-back-dashboard">&larr; Back to Dashboard</button>
+            <h2 style="margin-bottom: 24px;">Inventory Demands</h2>
+            <div class="shop-list-container">
+                <div class="shop-item">
+                    <div class="shop-info">
+                        <h4>iPhone 15 Pro Max • 256GB</h4>
+                        <p>Condition: Mint • Battery: 95%</p>
+                    </div>
+                    <div class="shop-offer">
+                        <span class="price">850 EUR</span>
+                        <button class="btn-contact">Contact Seller</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-info">
+                        <h4>Samsung Galaxy S24 Ultra • 512GB</h4>
+                        <p>Condition: Good • Battery: 88%</p>
+                    </div>
+                    <div class="shop-offer">
+                        <span class="price">720 EUR</span>
+                        <button class="btn-contact">Contact Seller</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-info">
+                        <h4>Xiaomi 14 Pro • 256GB</h4>
+                        <p>Condition: Fair • Battery: 82%</p>
+                    </div>
+                    <div class="shop-offer">
+                        <span class="price">410 EUR</span>
+                        <button class="btn-contact">Contact Seller</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>

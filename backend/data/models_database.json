@@ -1,0 +1,906 @@
+{
+  "models": [
+    {
+      "id": "iphone-8",
+      "brand": "Apple",
+      "name": "iPhone 8"
+    },
+    {
+      "id": "iphone-x",
+      "brand": "Apple",
+      "name": "iPhone X"
+    },
+    {
+      "id": "iphone-11",
+      "brand": "Apple",
+      "name": "iPhone 11"
+    },
+    {
+      "id": "iphone-11-pro",
+      "brand": "Apple",
+      "name": "iPhone 11 Pro"
+    },
+    {
+      "id": "iphone-11-pro-max",
+      "brand": "Apple",
+      "name": "iPhone 11 Pro Max"
+    },
+    {
+      "id": "iphone-12-mini",
+      "brand": "Apple",
+      "name": "iPhone 12 mini"
+    },
+    {
+      "id": "iphone-12",
+      "brand": "Apple",
+      "name": "iPhone 12"
+    },
+    {
+      "id": "iphone-12-pro",
+      "brand": "Apple",
+      "name": "iPhone 12 Pro"
+    },
+    {
+      "id": "iphone-12-pro-max",
+      "brand": "Apple",
+      "name": "iPhone 12 Pro Max"
+    },
+    {
+      "id": "iphone-13-mini",
+      "brand": "Apple",
+      "name": "iPhone 13 mini"
+    },
+    {
+      "id": "iphone-13",
+      "brand": "Apple",
+      "name": "iPhone 13"
+    },
+    {
+      "id": "iphone-13-pro",
+      "brand": "Apple",
+      "name": "iPhone 13 Pro"
+    },
+    {
+      "id": "iphone-13-pro-max",
+      "brand": "Apple",
+      "name": "iPhone 13 Pro Max"
+    },
+    {
+      "id": "iphone-14-plus",
+      "brand": "Apple",
+      "name": "iPhone 14 Plus"
+    },
+    {
+      "id": "iphone-14",
+      "brand": "Apple",
+      "name": "iPhone 14"
+    },
+    {
+      "id": "iphone-14-pro",
+      "brand": "Apple",
+      "name": "iPhone 14 Pro"
+    },
+    {
+      "id": "iphone-14-pro-max",
+      "brand": "Apple",
+      "name": "iPhone 14 Pro Max"
+    },
+    {
+      "id": "iphone-15-plus",
+      "brand": "Apple",
+      "name": "iPhone 15 Plus"
+    },
+    {
+      "id": "iphone-15",
+      "brand": "Apple",
+      "name": "iPhone 15"
+    },
+    {
+      "id": "iphone-15-pro",
+      "brand": "Apple",
+      "name": "iPhone 15 Pro"
+    },
+    {
+      "id": "iphone-15-pro-max",
+      "brand": "Apple",
+      "name": "iPhone 15 Pro Max"
+    },
+    {
+      "id": "iphone-16-plus",
+      "brand": "Apple",
+      "name": "iPhone 16 Plus"
+    },
+    {
+      "id": "iphone-16",
+      "brand": "Apple",
+      "name": "iPhone 16"
+    },
+    {
+      "id": "iphone-16-pro",
+      "brand": "Apple",
+      "name": "iPhone 16 Pro"
+    },
+    {
+      "id": "iphone-16-pro-max",
+      "brand": "Apple",
+      "name": "iPhone 16 Pro Max"
+    },
+    {
+      "id": "iphone-17-plus",
+      "brand": "Apple",
+      "name": "iPhone 17 Plus"
+    },
+    {
+      "id": "iphone-17",
+      "brand": "Apple",
+      "name": "iPhone 17"
+    },
+    {
+      "id": "iphone-17-pro",
+      "brand": "Apple",
+      "name": "iPhone 17 Pro"
+    },
+    {
+      "id": "iphone-17-pro-max",
+      "brand": "Apple",
+      "name": "iPhone 17 Pro Max"
+    },
+    {
+      "id": "iphone-se-2",
+      "brand": "Apple",
+      "name": "iPhone SE (2nd gen)"
+    },
+    {
+      "id": "iphone-se-3",
+      "brand": "Apple",
+      "name": "iPhone SE (3rd gen)"
+    },
+    {
+      "id": "galaxy-s10",
+      "brand": "Samsung",
+      "name": "Galaxy S10"
+    },
+    {
+      "id": "galaxy-s10-plus",
+      "brand": "Samsung",
+      "name": "Galaxy S10+"
+    },
+    {
+      "id": "galaxy-s20",
+      "brand": "Samsung",
+      "name": "Galaxy S20"
+    },
+    {
+      "id": "galaxy-s20-plus",
+      "brand": "Samsung",
+      "name": "Galaxy S20+"
+    },
+    {
+      "id": "galaxy-s20-ultra",
+      "brand": "Samsung",
+      "name": "Galaxy S20 Ultra"
+    },
+    {
+      "id": "galaxy-s20-fe",
+      "brand": "Samsung",
+      "name": "Galaxy S20 FE"
+    },
+    {
+      "id": "galaxy-s21",
+      "brand": "Samsung",
+      "name": "Galaxy S21"
+    },
+    {
+      "id": "galaxy-s21-plus",
+      "brand": "Samsung",
+      "name": "Galaxy S21+"
+    },
+    {
+      "id": "galaxy-s21-ultra",
+      "brand": "Samsung",
+      "name": "Galaxy S21 Ultra"
+    },
+    {
+      "id": "galaxy-s21-fe",
+      "brand": "Samsung",
+      "name": "Galaxy S21 FE"
+    },
+    {
+      "id": "galaxy-s22",
+      "brand": "Samsung",
+      "name": "Galaxy S22"
+    },
+    {
+      "id": "galaxy-s22-plus",
+      "brand": "Samsung",
+      "name": "Galaxy S22+"
+    },
+    {
+      "id": "galaxy-s22-ultra",
+      "brand": "Samsung",
+      "name": "Galaxy S22 Ultra"
+    },
+    {
+      "id": "galaxy-s22-fe",
+      "brand": "Samsung",
+      "name": "Galaxy S22 FE"
+    },
+    {
+      "id": "galaxy-s23",
+      "brand": "Samsung",
+      "name": "Galaxy S23"
+    },
+    {
+      "id": "galaxy-s23-plus",
+      "brand": "Samsung",
+      "name": "Galaxy S23+"
+    },
+    {
+      "id": "galaxy-s23-ultra",
+      "brand": "Samsung",
+      "name": "Galaxy S23 Ultra"
+    },
+    {
+      "id": "galaxy-s23-fe",
+      "brand": "Samsung",
+      "name": "Galaxy S23 FE"
+    },
+    {
+      "id": "galaxy-s24",
+      "brand": "Samsung",
+      "name": "Galaxy S24"
+    },
+    {
+      "id": "galaxy-s24-plus",
+      "brand": "Samsung",
+      "name": "Galaxy S24+"
+    },
+    {
+      "id": "galaxy-s24-ultra",
+      "brand": "Samsung",
+      "name": "Galaxy S24 Ultra"
+    },
+    {
+      "id": "galaxy-s24-fe",
+      "brand": "Samsung",
+      "name": "Galaxy S24 FE"
+    },
+    {
+      "id": "galaxy-a10",
+      "brand": "Samsung",
+      "name": "Galaxy A10"
+    },
+    {
+      "id": "galaxy-a11",
+      "brand": "Samsung",
+      "name": "Galaxy A11"
+    },
+    {
+      "id": "galaxy-a12",
+      "brand": "Samsung",
+      "name": "Galaxy A12"
+    },
+    {
+      "id": "galaxy-a13",
+      "brand": "Samsung",
+      "name": "Galaxy A13"
+    },
+    {
+      "id": "galaxy-a14",
+      "brand": "Samsung",
+      "name": "Galaxy A14"
+    },
+    {
+      "id": "galaxy-a15",
+      "brand": "Samsung",
+      "name": "Galaxy A15"
+    },
+    {
+      "id": "galaxy-a20",
+      "brand": "Samsung",
+      "name": "Galaxy A20"
+    },
+    {
+      "id": "galaxy-a21",
+      "brand": "Samsung",
+      "name": "Galaxy A21"
+    },
+    {
+      "id": "galaxy-a22",
+      "brand": "Samsung",
+      "name": "Galaxy A22"
+    },
+    {
+      "id": "galaxy-a23",
+      "brand": "Samsung",
+      "name": "Galaxy A23"
+    },
+    {
+      "id": "galaxy-a24",
+      "brand": "Samsung",
+      "name": "Galaxy A24"
+    },
+    {
+      "id": "galaxy-a25",
+      "brand": "Samsung",
+      "name": "Galaxy A25"
+    },
+    {
+      "id": "galaxy-a30",
+      "brand": "Samsung",
+      "name": "Galaxy A30"
+    },
+    {
+      "id": "galaxy-a31",
+      "brand": "Samsung",
+      "name": "Galaxy A31"
+    },
+    {
+      "id": "galaxy-a32",
+      "brand": "Samsung",
+      "name": "Galaxy A32"
+    },
+    {
+      "id": "galaxy-a33",
+      "brand": "Samsung",
+      "name": "Galaxy A33"
+    },
+    {
+      "id": "galaxy-a34",
+      "brand": "Samsung",
+      "name": "Galaxy A34"
+    },
+    {
+      "id": "galaxy-a35",
+      "brand": "Samsung",
+      "name": "Galaxy A35"
+    },
+    {
+      "id": "galaxy-a50",
+      "brand": "Samsung",
+      "name": "Galaxy A50"
+    },
+    {
+      "id": "galaxy-a51",
+      "brand": "Samsung",
+      "name": "Galaxy A51"
+    },
+    {
+      "id": "galaxy-a52",
+      "brand": "Samsung",
+      "name": "Galaxy A52"
+    },
+    {
+      "id": "galaxy-a53",
+      "brand": "Samsung",
+      "name": "Galaxy A53"
+    },
+    {
+      "id": "galaxy-a54",
+      "brand": "Samsung",
+      "name": "Galaxy A54"
+    },
+    {
+      "id": "galaxy-a55",
+      "brand": "Samsung",
+      "name": "Galaxy A55"
+    },
+    {
+      "id": "galaxy-z-fold-1",
+      "brand": "Samsung",
+      "name": "Galaxy Z Fold1"
+    },
+    {
+      "id": "galaxy-z-flip-1",
+      "brand": "Samsung",
+      "name": "Galaxy Z Flip1"
+    },
+    {
+      "id": "galaxy-z-fold-2",
+      "brand": "Samsung",
+      "name": "Galaxy Z Fold2"
+    },
+    {
+      "id": "galaxy-z-flip-2",
+      "brand": "Samsung",
+      "name": "Galaxy Z Flip2"
+    },
+    {
+      "id": "galaxy-z-fold-3",
+      "brand": "Samsung",
+      "name": "Galaxy Z Fold3"
+    },
+    {
+      "id": "galaxy-z-flip-3",
+      "brand": "Samsung",
+      "name": "Galaxy Z Flip3"
+    },
+    {
+      "id": "galaxy-z-fold-4",
+      "brand": "Samsung",
+      "name": "Galaxy Z Fold4"
+    },
+    {
+      "id": "galaxy-z-flip-4",
+      "brand": "Samsung",
+      "name": "Galaxy Z Flip4"
+    },
+    {
+      "id": "galaxy-z-fold-5",
+      "brand": "Samsung",
+      "name": "Galaxy Z Fold5"
+    },
+    {
+      "id": "galaxy-z-flip-5",
+      "brand": "Samsung",
+      "name": "Galaxy Z Flip5"
+    },
+    {
+      "id": "galaxy-z-fold-6",
+      "brand": "Samsung",
+      "name": "Galaxy Z Fold6"
+    },
+    {
+      "id": "galaxy-z-flip-6",
+      "brand": "Samsung",
+      "name": "Galaxy Z Flip6"
+    },
+    {
+      "id": "xiaomi-10",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 10"
+    },
+    {
+      "id": "xiaomi-10-pro",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 10 Pro"
+    },
+    {
+      "id": "xiaomi-10-ultra",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 10 Ultra"
+    },
+    {
+      "id": "xiaomi-11",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 11"
+    },
+    {
+      "id": "xiaomi-11-pro",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 11 Pro"
+    },
+    {
+      "id": "xiaomi-11-ultra",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 11 Ultra"
+    },
+    {
+      "id": "xiaomi-12",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 12"
+    },
+    {
+      "id": "xiaomi-12-pro",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 12 Pro"
+    },
+    {
+      "id": "xiaomi-12-ultra",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 12 Ultra"
+    },
+    {
+      "id": "xiaomi-13",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 13"
+    },
+    {
+      "id": "xiaomi-13-pro",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 13 Pro"
+    },
+    {
+      "id": "xiaomi-13-ultra",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 13 Ultra"
+    },
+    {
+      "id": "xiaomi-14",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 14"
+    },
+    {
+      "id": "xiaomi-14-pro",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 14 Pro"
+    },
+    {
+      "id": "xiaomi-14-ultra",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 14 Ultra"
+    },
+    {
+      "id": "redmi-note-9",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 9"
+    },
+    {
+      "id": "redmi-note-9-pro",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 9 Pro"
+    },
+    {
+      "id": "redmi-note-10",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 10"
+    },
+    {
+      "id": "redmi-note-10-pro",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 10 Pro"
+    },
+    {
+      "id": "redmi-note-11",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 11"
+    },
+    {
+      "id": "redmi-note-11-pro",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 11 Pro"
+    },
+    {
+      "id": "redmi-note-12",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 12"
+    },
+    {
+      "id": "redmi-note-12-pro",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 12 Pro"
+    },
+    {
+      "id": "redmi-note-13",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 13"
+    },
+    {
+      "id": "redmi-note-13-pro",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 13 Pro"
+    },
+    {
+      "id": "huawei-p30",
+      "brand": "Huawei",
+      "name": "Huawei P30"
+    },
+    {
+      "id": "huawei-p30-pro",
+      "brand": "Huawei",
+      "name": "Huawei P30 Pro"
+    },
+    {
+      "id": "huawei-mate-30",
+      "brand": "Huawei",
+      "name": "Huawei Mate 30"
+    },
+    {
+      "id": "huawei-mate-30-pro",
+      "brand": "Huawei",
+      "name": "Huawei Mate 30 Pro"
+    },
+    {
+      "id": "huawei-p40",
+      "brand": "Huawei",
+      "name": "Huawei P40"
+    },
+    {
+      "id": "huawei-p40-pro",
+      "brand": "Huawei",
+      "name": "Huawei P40 Pro"
+    },
+    {
+      "id": "huawei-mate-40",
+      "brand": "Huawei",
+      "name": "Huawei Mate 40"
+    },
+    {
+      "id": "huawei-mate-40-pro",
+      "brand": "Huawei",
+      "name": "Huawei Mate 40 Pro"
+    },
+    {
+      "id": "huawei-p50",
+      "brand": "Huawei",
+      "name": "Huawei P50"
+    },
+    {
+      "id": "huawei-p50-pro",
+      "brand": "Huawei",
+      "name": "Huawei P50 Pro"
+    },
+    {
+      "id": "huawei-mate-50",
+      "brand": "Huawei",
+      "name": "Huawei Mate 50"
+    },
+    {
+      "id": "huawei-mate-50-pro",
+      "brand": "Huawei",
+      "name": "Huawei Mate 50 Pro"
+    },
+    {
+      "id": "huawei-p60",
+      "brand": "Huawei",
+      "name": "Huawei P60"
+    },
+    {
+      "id": "huawei-p60-pro",
+      "brand": "Huawei",
+      "name": "Huawei P60 Pro"
+    },
+    {
+      "id": "huawei-mate-60",
+      "brand": "Huawei",
+      "name": "Huawei Mate 60"
+    },
+    {
+      "id": "huawei-mate-60-pro",
+      "brand": "Huawei",
+      "name": "Huawei Mate 60 Pro"
+    },
+    {
+      "id": "moto-edge-20",
+      "brand": "Motorola",
+      "name": "Motorola Edge 20"
+    },
+    {
+      "id": "moto-edge-20-pro",
+      "brand": "Motorola",
+      "name": "Motorola Edge 20 Pro"
+    },
+    {
+      "id": "moto-edge-30",
+      "brand": "Motorola",
+      "name": "Motorola Edge 30"
+    },
+    {
+      "id": "moto-edge-30-pro",
+      "brand": "Motorola",
+      "name": "Motorola Edge 30 Pro"
+    },
+    {
+      "id": "moto-edge-40",
+      "brand": "Motorola",
+      "name": "Motorola Edge 40"
+    },
+    {
+      "id": "moto-edge-40-pro",
+      "brand": "Motorola",
+      "name": "Motorola Edge 40 Pro"
+    },
+    {
+      "id": "moto-edge-50",
+      "brand": "Motorola",
+      "name": "Motorola Edge 50"
+    },
+    {
+      "id": "moto-edge-50-pro",
+      "brand": "Motorola",
+      "name": "Motorola Edge 50 Pro"
+    },
+    {
+      "id": "moto-g-power-2023",
+      "brand": "Motorola",
+      "name": "Moto G Power (2023)"
+    },
+    {
+      "id": "moto-g-stylus-2023",
+      "brand": "Motorola",
+      "name": "Moto G Stylus (2023)"
+    },
+    {
+      "id": "moto-razr-40",
+      "brand": "Motorola",
+      "name": "Motorola Razr 40"
+    },
+    {
+      "id": "moto-razr-40-ultra",
+      "brand": "Motorola",
+      "name": "Motorola Razr 40 Ultra"
+    },
+    {
+      "id": "nokia-g10",
+      "brand": "Nokia",
+      "name": "Nokia G10"
+    },
+    {
+      "id": "nokia-g20",
+      "brand": "Nokia",
+      "name": "Nokia G20"
+    },
+    {
+      "id": "nokia-g21",
+      "brand": "Nokia",
+      "name": "Nokia G21"
+    },
+    {
+      "id": "nokia-g42",
+      "brand": "Nokia",
+      "name": "Nokia G42"
+    },
+    {
+      "id": "nokia-x10",
+      "brand": "Nokia",
+      "name": "Nokia X10"
+    },
+    {
+      "id": "nokia-x20",
+      "brand": "Nokia",
+      "name": "Nokia X20"
+    },
+    {
+      "id": "nokia-x30",
+      "brand": "Nokia",
+      "name": "Nokia X30"
+    },
+    {
+      "id": "other-smartphone",
+      "brand": "Other",
+      "name": "Other Smartphone"
+    }
+  ],
+  "base_values": {
+    "iphone-8": 100,
+    "iphone-x": 300,
+    "iphone-11": 400,
+    "iphone-11-pro": 600,
+    "iphone-11-pro-max": 700,
+    "iphone-12-mini": 450,
+    "iphone-12": 500,
+    "iphone-12-pro": 700,
+    "iphone-12-pro-max": 800,
+    "iphone-13-mini": 550,
+    "iphone-13": 600,
+    "iphone-13-pro": 800,
+    "iphone-13-pro-max": 900,
+    "iphone-14-plus": 800,
+    "iphone-14": 700,
+    "iphone-14-pro": 900,
+    "iphone-14-pro-max": 1000,
+    "iphone-15-plus": 900,
+    "iphone-15": 800,
+    "iphone-15-pro": 1000,
+    "iphone-15-pro-max": 1100,
+    "iphone-16-plus": 1000,
+    "iphone-16": 900,
+    "iphone-16-pro": 1100,
+    "iphone-16-pro-max": 1200,
+    "iphone-17-plus": 1100,
+    "iphone-17": 1000,
+    "iphone-17-pro": 1200,
+    "iphone-17-pro-max": 1300,
+    "iphone-se-2": 150,
+    "iphone-se-3": 250,
+    "galaxy-s10": 80,
+    "galaxy-s10-plus": 230,
+    "galaxy-s20": 400,
+    "galaxy-s20-plus": 550,
+    "galaxy-s20-ultra": 700,
+    "galaxy-s20-fe": 300,
+    "galaxy-s21": 480,
+    "galaxy-s21-plus": 630,
+    "galaxy-s21-ultra": 780,
+    "galaxy-s21-fe": 380,
+    "galaxy-s22": 560,
+    "galaxy-s22-plus": 710,
+    "galaxy-s22-ultra": 860,
+    "galaxy-s22-fe": 460,
+    "galaxy-s23": 640,
+    "galaxy-s23-plus": 790,
+    "galaxy-s23-ultra": 940,
+    "galaxy-s23-fe": 540,
+    "galaxy-s24": 720,
+    "galaxy-s24-plus": 870,
+    "galaxy-s24-ultra": 1020,
+    "galaxy-s24-fe": 620,
+    "galaxy-a10": 120,
+    "galaxy-a11": 130,
+    "galaxy-a12": 140,
+    "galaxy-a13": 150,
+    "galaxy-a14": 160,
+    "galaxy-a15": 170,
+    "galaxy-a20": 140,
+    "galaxy-a21": 150,
+    "galaxy-a22": 160,
+    "galaxy-a23": 170,
+    "galaxy-a24": 180,
+    "galaxy-a25": 190,
+    "galaxy-a30": 160,
+    "galaxy-a31": 170,
+    "galaxy-a32": 180,
+    "galaxy-a33": 190,
+    "galaxy-a34": 200,
+    "galaxy-a35": 210,
+    "galaxy-a50": 200,
+    "galaxy-a51": 210,
+    "galaxy-a52": 220,
+    "galaxy-a53": 230,
+    "galaxy-a54": 240,
+    "galaxy-a55": 250,
+    "galaxy-z-fold-1": 500,
+    "galaxy-z-flip-1": 380,
+    "galaxy-z-fold-2": 600,
+    "galaxy-z-flip-2": 460,
+    "galaxy-z-fold-3": 700,
+    "galaxy-z-flip-3": 540,
+    "galaxy-z-fold-4": 800,
+    "galaxy-z-flip-4": 620,
+    "galaxy-z-fold-5": 900,
+    "galaxy-z-flip-5": 700,
+    "galaxy-z-fold-6": 1000,
+    "galaxy-z-flip-6": 780,
+    "xiaomi-10": 100,
+    "xiaomi-10-pro": 250,
+    "xiaomi-10-ultra": 400,
+    "xiaomi-11": 200,
+    "xiaomi-11-pro": 350,
+    "xiaomi-11-ultra": 500,
+    "xiaomi-12": 300,
+    "xiaomi-12-pro": 450,
+    "xiaomi-12-ultra": 600,
+    "xiaomi-13": 400,
+    "xiaomi-13-pro": 550,
+    "xiaomi-13-ultra": 700,
+    "xiaomi-14": 500,
+    "xiaomi-14-pro": 650,
+    "xiaomi-14-ultra": 800,
+    "redmi-note-9": 80,
+    "redmi-note-9-pro": 130,
+    "redmi-note-10": 160,
+    "redmi-note-10-pro": 210,
+    "redmi-note-11": 240,
+    "redmi-note-11-pro": 290,
+    "redmi-note-12": 320,
+    "redmi-note-12-pro": 370,
+    "redmi-note-13": 400,
+    "redmi-note-13-pro": 450,
+    "huawei-p30": 300,
+    "huawei-p30-pro": 450,
+    "huawei-mate-30": 350,
+    "huawei-mate-30-pro": 500,
+    "huawei-p40": 400,
+    "huawei-p40-pro": 550,
+    "huawei-mate-40": 450,
+    "huawei-mate-40-pro": 600,
+    "huawei-p50": 500,
+    "huawei-p50-pro": 650,
+    "huawei-mate-50": 550,
+    "huawei-mate-50-pro": 700,
+    "huawei-p60": 600,
+    "huawei-p60-pro": 750,
+    "huawei-mate-60": 650,
+    "huawei-mate-60-pro": 800,
+    "moto-edge-20": 200,
+    "moto-edge-20-pro": 300,
+    "moto-edge-30": 300,
+    "moto-edge-30-pro": 450,
+    "moto-edge-40": 400,
+    "moto-edge-40-pro": 600,
+    "moto-edge-50": 500,
+    "moto-edge-50-pro": 750,
+    "moto-g-power-2023": 150,
+    "moto-g-stylus-2023": 180,
+    "moto-razr-40": 400,
+    "moto-razr-40-ultra": 600,
+    "nokia-g10": 110,
+    "nokia-g20": 120,
+    "nokia-g21": 121,
+    "nokia-g42": 142,
+    "nokia-x10": 160,
+    "nokia-x20": 170,
+    "nokia-x30": 180,
+    "other-smartphone": 100
+  }
+}
