@@ -13,7 +13,12 @@ let state = {
     valuation: null,
     shops: [],
     user: null,
-    token: null
+    token: null,
+    mockInventory: [
+        { model: 'iPhone 15 Pro Max • 256GB', condition: 'Mint', battery: 95, baseEur: 850 },
+        { model: 'Samsung Galaxy S24 Ultra • 512GB', condition: 'Good', battery: 88, baseEur: 720 },
+        { model: 'Xiaomi 14 Pro • 256GB', condition: 'Fair', battery: 82, baseEur: 410 }
+    ]
 };
 
 // Elements
@@ -66,8 +71,15 @@ function setupHeader() {
         userMenu.style.display = 'flex';
         userNameDisplay.textContent = state.user.name;
         
-        // Show currency toggle only if seller
-        currencyToggle.style.display = state.user.role === 'seller' ? 'flex' : 'none';
+        const headerAvatar = document.getElementById('header-avatar');
+        if (state.user.profile_picture) {
+            headerAvatar.src = state.user.profile_picture;
+            headerAvatar.style.display = 'block';
+        } else {
+            headerAvatar.style.display = 'none';
+        }
+        
+        currencyToggle.style.display = 'flex';
     } else {
         authButtons.style.display = 'flex';
         userMenu.style.display = 'none';
@@ -105,9 +117,13 @@ function setCurrency(currency) {
     // Update UI if we're on results page
     const resultsScreen = document.querySelector('.results-screen');
     if (resultsScreen && state.valuation) {
-        // Refetch valuation or just recalculate frontend?
-        // Since API returns ALL/EUR, let's re-evaluate using the API
         fetchValuation();
+    }
+    
+    // Update UI if we're on inventory page
+    const inventoryScreen = document.querySelector('.inventory-screen');
+    if (inventoryScreen) {
+        renderShopInventoryList();
     }
 }
 
@@ -141,6 +157,14 @@ function renderResults() {
     appContainer.appendChild(template);
     
     document.getElementById('btn-back-q').addEventListener('click', renderQuestionnaire);
+    document.getElementById('btn-consult-ai').addEventListener('click', renderChatModal);
+    
+    // Header Profile Click
+    document.getElementById('user-menu').addEventListener('click', (e) => {
+        if (e.target.id !== 'btn-logout') {
+            renderProfileModal();
+        }
+    });
     
     updateResultsUI();
     fetchValuation(); // This will chain into fetchShops
@@ -173,9 +197,100 @@ function renderShopDashboard() {
     appContainer.appendChild(template);
     
     document.getElementById('shop-welcome').textContent = `Welcome back, ${state.user.name}!`;
-    document.getElementById('currency-toggle-container').style.display = 'none';
+    document.getElementById('shop-location-display').textContent = state.user.address || 'Not provided';
+    document.getElementById('shop-contact-display').textContent = state.user.contact_info || 'Not provided';
     
     document.getElementById('btn-view-inventory').addEventListener('click', renderShopInventory);
+    
+    // Edit Profile Logic
+    document.getElementById('btn-edit-profile').addEventListener('click', renderProfileModal);
+}
+
+function renderProfileModal() {
+    const template = document.getElementById('tpl-profile-modal').content.cloneNode(true);
+    document.body.appendChild(template);
+    
+    const profileModal = document.getElementById('profile-modal');
+    const btnClose = document.getElementById('btn-close-profile');
+    const formEdit = document.getElementById('form-edit-profile');
+    const errorDiv = document.getElementById('profile-error');
+    const fileInput = document.getElementById('edit-profile-picture');
+    const avatarPreview = document.getElementById('edit-profile-avatar-preview');
+    
+    let base64Image = state.user.profile_picture || '';
+    
+    // Pre-fill
+    document.getElementById('edit-profile-name').value = state.user.name || '';
+    document.getElementById('edit-profile-address').value = state.user.address && state.user.address !== 'Not provided' ? state.user.address : '';
+    document.getElementById('edit-profile-contact').value = state.user.contact_info && state.user.contact_info !== 'Not provided' ? state.user.contact_info : '';
+    
+    if (base64Image) {
+        avatarPreview.src = base64Image;
+        avatarPreview.style.display = 'block';
+    }
+    
+    btnClose.addEventListener('click', () => profileModal.remove());
+    
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                base64Image = evt.target.result;
+                avatarPreview.src = base64Image;
+                avatarPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    formEdit.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorDiv.textContent = '';
+        const btnSave = document.getElementById('btn-save-profile');
+        btnSave.textContent = 'Saving...';
+        btnSave.disabled = true;
+        
+        const newName = document.getElementById('edit-profile-name').value;
+        const newAddress = document.getElementById('edit-profile-address').value;
+        const newContact = document.getElementById('edit-profile-contact').value;
+        
+        try {
+            const res = await fetch(`${API_BASE}/auth/profile`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${state.token}`
+                },
+                body: JSON.stringify({ 
+                    name: newName, 
+                    address: newAddress, 
+                    contact_info: newContact,
+                    profile_picture: base64Image
+                })
+            });
+            
+            const data = await res.json();
+            if (data.error) {
+                errorDiv.textContent = data.error;
+            } else {
+                state.user = data;
+                localStorage.setItem('user', JSON.stringify(state.user));
+                profileModal.remove();
+                
+                // Re-render dashboard if shop
+                if (state.user.role === 'shop') {
+                    renderShopDashboard();
+                }
+                setupHeader();
+            }
+        } catch (err) {
+            errorDiv.textContent = 'Failed to update profile.';
+        } finally {
+            btnSave.textContent = 'Save Changes';
+            btnSave.disabled = false;
+        }
+    });
 }
 
 function renderShopInventory() {
@@ -184,6 +299,39 @@ function renderShopInventory() {
     appContainer.appendChild(template);
     
     document.getElementById('btn-back-dashboard').addEventListener('click', renderShopDashboard);
+    
+    renderShopInventoryList();
+}
+
+function renderShopInventoryList() {
+    const container = document.querySelector('.shop-list-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    // 104.5 is the mock exchange rate from app.py
+    const EUR_TO_ALL_RATE = 104.5;
+    
+    state.mockInventory.forEach(item => {
+        let displayPrice = item.baseEur;
+        if (state.currency === 'ALL') {
+            displayPrice = item.baseEur * EUR_TO_ALL_RATE;
+        }
+        
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.innerHTML = `
+            <div class="shop-info">
+                <h4>${item.model}</h4>
+                <p>Condition: ${item.condition} • Battery: ${item.battery}%</p>
+            </div>
+            <div class="shop-offer">
+                <span class="price">${displayPrice.toLocaleString()} ${state.currency}</span>
+                <button class="btn-contact">Contact Seller</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
     
     const contactBtns = document.querySelectorAll('.inventory-screen .btn-contact');
     contactBtns.forEach(btn => {
@@ -436,7 +584,7 @@ function updateResultsUI() {
 }
 
 async function fetchShops() {
-    const listContainer = document.getElementById('shop-list');
+    const listContainer = document.getElementById('shop-container');
     listContainer.innerHTML = '<div class="loader">Loading offers...</div>';
     
     try {
@@ -453,7 +601,7 @@ async function fetchShops() {
 }
 
 function renderShopList() {
-    const listContainer = document.getElementById('shop-list');
+    const listContainer = document.getElementById('shop-container');
     listContainer.innerHTML = '';
     
     if (state.shops.length === 0) {
@@ -478,4 +626,81 @@ function renderShopList() {
         
         listContainer.appendChild(item);
     });
+}
+
+// --- AI Chat Logic ---
+
+function renderChatModal() {
+    const template = document.getElementById('tpl-ai-chat').content.cloneNode(true);
+    document.body.appendChild(template);
+    
+    const chatModal = document.getElementById('chat-modal');
+    const btnClose = document.getElementById('btn-close-chat');
+    const btnSend = document.getElementById('btn-send-chat');
+    const chatInput = document.getElementById('chat-input');
+    
+    btnClose.addEventListener('click', () => {
+        chatModal.remove();
+    });
+    
+    btnSend.addEventListener('click', sendChatMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendChatMessage();
+    });
+    
+    // Initial welcome message
+    addChatMessage("Hi there! I'm your AI Valuation Consultant. I've analyzed your phone and the local offers. How can I help you decide today?", false);
+}
+
+function addChatMessage(text, isUser = false) {
+    const messagesContainer = document.getElementById('chat-messages');
+    if (!messagesContainer) return;
+    
+    const div = document.createElement('div');
+    div.className = `chat-bubble ${isUser ? 'chat-user' : 'chat-ai'}`;
+    div.textContent = text;
+    messagesContainer.appendChild(div);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+async function sendChatMessage() {
+    const chatInput = document.getElementById('chat-input');
+    const text = chatInput.value.trim();
+    if (!text) return;
+    
+    addChatMessage(text, true);
+    chatInput.value = '';
+    
+    // Add typing indicator
+    const typingId = 'typing-' + Date.now();
+    const messagesContainer = document.getElementById('chat-messages');
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'chat-bubble chat-ai';
+    typingDiv.id = typingId;
+    typingDiv.textContent = 'Typing...';
+    messagesContainer.appendChild(typingDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    try {
+        const res = await fetch(`${API_BASE}/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                valuationId: state.valuation?.valuationId,
+                message: text
+            })
+        });
+        const data = await res.json();
+        
+        document.getElementById(typingId)?.remove();
+        
+        if (data.reply) {
+            addChatMessage(data.reply, false);
+        } else {
+            addChatMessage("Sorry, I encountered an error. Please try again.", false);
+        }
+    } catch (err) {
+        document.getElementById(typingId)?.remove();
+        addChatMessage("Connection error. Could not reach the AI.", false);
+    }
 }

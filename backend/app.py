@@ -107,6 +107,73 @@ def get_me():
         
     return jsonify(user)
 
+@app.route('/api/auth/profile', methods=['PUT'])
+def update_profile():
+    token = request.headers.get('Authorization')
+    if token and token.startswith('Bearer '):
+        token = token.split(' ')[1]
+        
+    user = database.get_user_by_token(token)
+    if not user:
+        return jsonify({"error": "Unauthorized"}), 401
+        
+    data = request.json
+    name = data.get('name', user['name'])
+    address = data.get('address', user.get('address', 'Not provided'))
+    contact_info = data.get('contact_info', user.get('contact_info', 'Not provided'))
+    profile_picture = data.get('profile_picture', user.get('profile_picture', ''))
+    
+    success = database.update_user_profile(user['id'], name, address, contact_info, profile_picture)
+    if success:
+        # Fetch updated user to return
+        updated_user = database.get_user_by_token(token)
+        return jsonify(updated_user)
+    else:
+        return jsonify({"error": "Failed to update profile"}), 500
+
+# --- AI Chat Endpoint ---
+
+try:
+    import google.generativeai as genai
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+    if GEMINI_API_KEY:
+        genai.configure(api_key=GEMINI_API_KEY)
+except ImportError:
+    GEMINI_API_KEY = None
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    valuation_id = data.get('valuationId')
+    message = data.get('message', '')
+    
+    valuation = valuations_db.get(valuation_id)
+    if not valuation:
+        # Fallback if no specific valuation is found
+        model_id = "smartphone"
+        base_eur_value = 300
+    else:
+        model_id = valuation["modelId"]
+        base_eur_value = valuation["baseEurValue"]
+    
+    if GEMINI_API_KEY:
+        try:
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            prompt = f"You are an expert smartphone valuation consultant. The user is selling a {model_id} with an estimated base market value of {base_eur_value} EUR. Provide concise, friendly advice. User message: {message}"
+            response = model.generate_content(prompt)
+            return jsonify({"reply": response.text})
+        except Exception as e:
+            pass # Fall back to simulated on error
+            
+    # Simulated AI Fallback
+    reply = f"I'm your simulated AI advisor! I noticed your {model_id} has a base value of {base_eur_value} EUR. If a shop offers within 10%, that's a solid deal!"
+    if "negotiate" in message.lower():
+        reply = "Always try to negotiate! Start by asking for 10% more than their initial offer."
+    elif "good" in message.lower() or "fair" in message.lower():
+        reply = f"Yes, any offer above {base_eur_value * 0.9} EUR is considered fair for this condition."
+        
+    return jsonify({"reply": reply})
+
 # --- Endpoints ---
 
 @app.route('/api/models', methods=['GET'])

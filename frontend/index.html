@@ -20,9 +20,10 @@
                     <button class="btn-link" id="btn-show-login">Login</button>
                     <button class="btn-outline" id="btn-show-signup">Sign Up</button>
                 </div>
-                <div class="user-menu" id="user-menu" style="display: none;">
+                <div class="user-menu" id="user-menu" style="display: none;" title="Edit Profile">
+                    <img id="header-avatar" class="avatar-thumbnail" src="" alt="Avatar" style="display: none;">
                     <span id="user-name-display" style="margin-right: 12px; font-weight: 500;"></span>
-                    <button class="btn-outline" id="btn-logout">Logout</button>
+                    <button class="btn-outline" id="btn-logout" style="margin-left: 8px;">Logout</button>
                 </div>
             </div>
         </div>
@@ -146,12 +147,20 @@
                 <p class="condition-summary" id="res-summary">iPhone 15 • 128GB • 90% Battery • Mint</p>
             </div>
 
-            <div class="shop-list-container">
-                <h3>Local Shop Offers</h3>
-                <div id="shop-list" class="shop-list">
-                    <div class="loader">Loading offers...</div>
+            <div class="shop-list">
+                <h3>Top Offers Near You</h3>
+                <div id="shop-container">
+                    <!-- Shop cards populated by JS -->
                 </div>
             </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn-primary" id="btn-consult-ai" style="background: linear-gradient(90deg, var(--accent-purple), var(--accent-color)); color: white; box-shadow: var(--glow);">
+                    ✨ Consult AI Advisor
+                </button>
+            </div>
+            
+            <button class="btn-back mt-4" id="btn-back-q">&larr; Recalculate</button>
         </div>
     </template>
 
@@ -211,6 +220,23 @@
                 <h2 id="shop-welcome" style="font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(90deg, var(--accent-color), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Welcome back, Shop!</h2>
                 <p style="color: var(--text-secondary); font-size: 1.125rem;">You are logged in as a business.</p>
             </div>
+            
+            <div class="features-section" style="margin-top: 20px; margin-bottom: 32px; grid-template-columns: repeat(2, 1fr);">
+                <div class="feature-card" style="text-align: left;">
+                    <h4 style="font-size: 1.25rem;">📈 Performance Analytics</h4>
+                    <p style="margin-top: 8px;">Total Leads: <strong>142</strong></p>
+                    <p>Offers Accepted: <strong style="color: var(--success-color);">24</strong></p>
+                    <p>Conversion Rate: <strong>16.9%</strong></p>
+                </div>
+                <div class="feature-card" style="text-align: left;">
+                    <h4 style="font-size: 1.25rem;">⚙️ Profile Management</h4>
+                    <p style="margin-top: 8px;">Status: <strong style="color: var(--success-color);">Active</strong></p>
+                    <p>Location: <strong id="shop-location-display">Tirana Center</strong></p>
+                    <p>Contact: <strong id="shop-contact-display">Not provided</strong></p>
+                    <button class="btn-outline mt-4" id="btn-edit-profile" style="padding: 4px 12px; font-size: 0.8rem;">Edit Profile</button>
+                </div>
+            </div>
+
             <div class="valuation-card" style="text-align: left; padding: 32px;">
                 <h3 style="font-size: 1.5rem; color: var(--text-primary);">Incoming Leads</h3>
                 <p style="color: var(--text-secondary); margin-top: 16px; font-size: 1rem;">
@@ -221,41 +247,62 @@
         </div>
     </template>
 
+    <template id="tpl-ai-chat">
+        <div class="modal-overlay" id="chat-modal">
+            <div class="chat-container fade-in">
+                <div class="chat-header">
+                    <h3>✨ AI Consultant</h3>
+                    <button class="btn-close" id="btn-close-chat">&times;</button>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages will be populated here -->
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Ask about the offers, negotiation, etc..." autocomplete="off">
+                    <button class="btn-primary" id="btn-send-chat" style="padding: 12px 20px; border-radius: 20px;">Send</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-profile-modal">
+        <div class="modal-overlay" id="profile-modal">
+            <div class="auth-card fade-in" style="width: 90%; max-width: 500px; padding: 32px;">
+                <div class="chat-header" style="background: transparent; border-bottom: none; padding: 0 0 16px 0;">
+                    <h3 style="font-size: 1.5rem;">Edit Profile</h3>
+                    <button class="btn-close" id="btn-close-profile">&times;</button>
+                </div>
+                <form id="form-edit-profile">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img id="edit-profile-avatar-preview" src="" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-purple); display: none; margin: 0 auto 10px auto;">
+                        <label for="edit-profile-picture" style="cursor: pointer; color: var(--accent-color); font-size: 0.9rem;">Change Profile Picture</label>
+                        <input type="file" id="edit-profile-picture" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="edit-profile-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Physical Address</label>
+                        <input type="text" id="edit-profile-address" placeholder="e.g. Blloku, Tirana" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Information (Phone / Email)</label>
+                        <input type="text" id="edit-profile-contact" placeholder="e.g. +355 69..." required>
+                    </div>
+                    <button type="submit" class="btn-primary mt-4" id="btn-save-profile">Save Changes</button>
+                    <div class="auth-error" id="profile-error"></div>
+                </form>
+            </div>
+        </div>
+    </template>
+
     <template id="tpl-shop-inventory">
         <div class="screen inventory-screen fade-in">
             <button class="btn-back" id="btn-back-dashboard">&larr; Back to Dashboard</button>
             <h2 style="margin-bottom: 24px;">Inventory Demands</h2>
             <div class="shop-list-container">
-                <div class="shop-item">
-                    <div class="shop-info">
-                        <h4>iPhone 15 Pro Max • 256GB</h4>
-                        <p>Condition: Mint • Battery: 95%</p>
-                    </div>
-                    <div class="shop-offer">
-                        <span class="price">850 EUR</span>
-                        <button class="btn-contact">Contact Seller</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <div class="shop-info">
-                        <h4>Samsung Galaxy S24 Ultra • 512GB</h4>
-                        <p>Condition: Good • Battery: 88%</p>
-                    </div>
-                    <div class="shop-offer">
-                        <span class="price">720 EUR</span>
-                        <button class="btn-contact">Contact Seller</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <div class="shop-info">
-                        <h4>Xiaomi 14 Pro • 256GB</h4>
-                        <p>Condition: Fair • Battery: 82%</p>
-                    </div>
-                    <div class="shop-offer">
-                        <span class="price">410 EUR</span>
-                        <button class="btn-contact">Contact Seller</button>
-                    </div>
-                </div>
+                <!-- Dynamically populated by JS -->
             </div>
         </div>
     </template>
