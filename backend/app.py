@@ -119,17 +119,18 @@ def update_profile():
         
     data = request.json
     name = data.get('name', user['name'])
+    email = data.get('email', user['email'])
     address = data.get('address', user.get('address', 'Not provided'))
     contact_info = data.get('contact_info', user.get('contact_info', 'Not provided'))
     profile_picture = data.get('profile_picture', user.get('profile_picture', ''))
     
-    success = database.update_user_profile(user['id'], name, address, contact_info, profile_picture)
+    success, error_msg = database.update_user_profile(user['id'], name, email, address, contact_info, profile_picture)
     if success:
         # Fetch updated user to return
         updated_user = database.get_user_by_token(token)
         return jsonify(updated_user)
     else:
-        return jsonify({"error": "Failed to update profile"}), 500
+        return jsonify({"error": error_msg or "Failed to update profile"}), 400
 
 # --- AI Chat Endpoint ---
 

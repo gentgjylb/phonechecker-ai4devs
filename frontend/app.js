@@ -38,6 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setupHeader();
     setupCurrencyToggles();
     
+    // Header Profile Click (Global)
+    document.getElementById('user-menu').addEventListener('click', (e) => {
+        if (e.target.id !== 'btn-logout') {
+            renderProfilePage();
+        }
+    });
+    
     // Route based on auth state
     if (state.user && state.user.role === 'shop') {
         renderShopDashboard();
@@ -159,13 +166,6 @@ function renderResults() {
     document.getElementById('btn-back-q').addEventListener('click', renderQuestionnaire);
     document.getElementById('btn-consult-ai').addEventListener('click', renderChatModal);
     
-    // Header Profile Click
-    document.getElementById('user-menu').addEventListener('click', (e) => {
-        if (e.target.id !== 'btn-logout') {
-            renderProfileModal();
-        }
-    });
-    
     updateResultsUI();
     fetchValuation(); // This will chain into fetchShops
 }
@@ -203,15 +203,15 @@ function renderShopDashboard() {
     document.getElementById('btn-view-inventory').addEventListener('click', renderShopInventory);
     
     // Edit Profile Logic
-    document.getElementById('btn-edit-profile').addEventListener('click', renderProfileModal);
+    document.getElementById('btn-edit-profile').addEventListener('click', renderProfilePage);
 }
 
-function renderProfileModal() {
-    const template = document.getElementById('tpl-profile-modal').content.cloneNode(true);
-    document.body.appendChild(template);
+function renderProfilePage() {
+    const template = document.getElementById('tpl-profile-page').content.cloneNode(true);
+    appContainer.innerHTML = '';
+    appContainer.appendChild(template);
     
-    const profileModal = document.getElementById('profile-modal');
-    const btnClose = document.getElementById('btn-close-profile');
+    const btnBack = document.getElementById('btn-back-profile');
     const formEdit = document.getElementById('form-edit-profile');
     const errorDiv = document.getElementById('profile-error');
     const fileInput = document.getElementById('edit-profile-picture');
@@ -221,6 +221,7 @@ function renderProfileModal() {
     
     // Pre-fill
     document.getElementById('edit-profile-name').value = state.user.name || '';
+    document.getElementById('edit-profile-email').value = state.user.email || '';
     document.getElementById('edit-profile-address').value = state.user.address && state.user.address !== 'Not provided' ? state.user.address : '';
     document.getElementById('edit-profile-contact').value = state.user.contact_info && state.user.contact_info !== 'Not provided' ? state.user.contact_info : '';
     
@@ -229,7 +230,13 @@ function renderProfileModal() {
         avatarPreview.style.display = 'block';
     }
     
-    btnClose.addEventListener('click', () => profileModal.remove());
+    btnBack.addEventListener('click', () => {
+        if (state.user.role === 'shop') {
+            renderShopDashboard();
+        } else {
+            renderLanding();
+        }
+    });
     
     fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -252,6 +259,7 @@ function renderProfileModal() {
         btnSave.disabled = true;
         
         const newName = document.getElementById('edit-profile-name').value;
+        const newEmail = document.getElementById('edit-profile-email').value;
         const newAddress = document.getElementById('edit-profile-address').value;
         const newContact = document.getElementById('edit-profile-contact').value;
         
@@ -264,6 +272,7 @@ function renderProfileModal() {
                 },
                 body: JSON.stringify({ 
                     name: newName, 
+                    email: newEmail,
                     address: newAddress, 
                     contact_info: newContact,
                     profile_picture: base64Image
@@ -276,11 +285,12 @@ function renderProfileModal() {
             } else {
                 state.user = data;
                 localStorage.setItem('user', JSON.stringify(state.user));
-                profileModal.remove();
                 
-                // Re-render dashboard if shop
+                // Route back
                 if (state.user.role === 'shop') {
                     renderShopDashboard();
+                } else {
+                    renderLanding();
                 }
                 setupHeader();
             }

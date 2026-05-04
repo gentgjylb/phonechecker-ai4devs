@@ -265,17 +265,16 @@
         </div>
     </template>
 
-    <template id="tpl-profile-modal">
-        <div class="modal-overlay" id="profile-modal">
-            <div class="auth-card fade-in" style="width: 90%; max-width: 500px; padding: 32px;">
-                <div class="chat-header" style="background: transparent; border-bottom: none; padding: 0 0 16px 0;">
-                    <h3 style="font-size: 1.5rem;">Edit Profile</h3>
-                    <button class="btn-close" id="btn-close-profile">&times;</button>
-                </div>
+    <template id="tpl-profile-page">
+        <div class="screen profile-screen fade-in">
+            <button class="btn-back" id="btn-back-profile">&larr; Back</button>
+            <div class="auth-card" style="width: 100%; max-width: 600px; margin: 40px auto; padding: 40px;">
+                <h2 style="font-size: 2rem; margin-bottom: 8px; text-align: center;">Profile Settings</h2>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 32px;">Update your personal or business details.</p>
                 <form id="form-edit-profile">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <img id="edit-profile-avatar-preview" src="" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-purple); display: none; margin: 0 auto 10px auto;">
-                        <label for="edit-profile-picture" style="cursor: pointer; color: var(--accent-color); font-size: 0.9rem;">Change Profile Picture</label>
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <img id="edit-profile-avatar-preview" src="" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-purple); display: none; margin: 0 auto 12px auto;">
+                        <label for="edit-profile-picture" style="cursor: pointer; color: var(--accent-color); font-weight: 500;">Change Profile Picture</label>
                         <input type="file" id="edit-profile-picture" accept="image/*" style="display: none;">
                     </div>
                     <div class="form-group">
@@ -283,15 +282,19 @@
                         <input type="text" id="edit-profile-name" required>
                     </div>
                     <div class="form-group">
-                        <label>Physical Address</label>
+                        <label>Email Address</label>
+                        <input type="email" id="edit-profile-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Physical Address / Location</label>
                         <input type="text" id="edit-profile-address" placeholder="e.g. Blloku, Tirana" required>
                     </div>
                     <div class="form-group">
-                        <label>Contact Information (Phone / Email)</label>
+                        <label>Contact Information (Phone)</label>
                         <input type="text" id="edit-profile-contact" placeholder="e.g. +355 69..." required>
                     </div>
                     <button type="submit" class="btn-primary mt-4" id="btn-save-profile">Save Changes</button>
-                    <div class="auth-error" id="profile-error"></div>
+                    <div class="auth-error" id="profile-error" style="text-align: center; margin-top: 16px;"></div>
                 </form>
             </div>
         </div>

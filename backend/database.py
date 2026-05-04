@@ -117,19 +117,24 @@ def get_user_by_token(token):
     finally:
         conn.close()
 
-def update_user_profile(user_id, name, address, contact_info, profile_picture):
+def update_user_profile(user_id, name, email, address, contact_info, profile_picture):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     try:
+        # Check if email is already taken by someone else
+        c.execute("SELECT id FROM users WHERE email = ? AND id != ?", (email, user_id))
+        if c.fetchone():
+            return False, "Email already in use by another account"
+
         c.execute('''
             UPDATE users
-            SET name = ?, address = ?, contact_info = ?, profile_picture = ?
+            SET name = ?, email = ?, address = ?, contact_info = ?, profile_picture = ?
             WHERE id = ?
-        ''', (name, address, contact_info, profile_picture, user_id))
+        ''', (name, email, address, contact_info, profile_picture, user_id))
         conn.commit()
-        return True
+        return True, None
     except Exception as e:
         print("Profile update error:", e)
-        return False
+        return False, str(e)
     finally:
         conn.close()
