@@ -173,7 +173,48 @@ def chat():
     elif "good" in message.lower() or "fair" in message.lower():
         reply = f"Yes, any offer above {base_eur_value * 0.9} EUR is considered fair for this condition."
         
-    return jsonify({"reply": reply})
+        return jsonify({"reply": reply})
+
+@app.route('/api/scan-condition', methods=['POST'])
+def scan_condition():
+    if not GEMINI_API_KEY:
+        return jsonify({"error": "AI scanning requires an active Gemini API key."}), 503
+        
+    data = request.json
+    image_b64 = data.get('image')
+    
+    if not image_b64:
+        return jsonify({"error": "No image provided"}), 400
+        
+    try:
+        import base64
+        # Strip data URL prefix if present
+        if ',' in image_b64:
+            image_b64 = image_b64.split(',')[1]
+            
+        image_bytes = base64.b64decode(image_b64)
+        
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        prompt = "Analyze the physical condition of this phone. Categorize its condition as precisely ONE of the following options: '1' (Mint - no scratches), '2' (Good - minor wear), '3' (Fair - visible scratches/dents), '4' (Cracked - cracked screen or back), or '5' (Broken - major damage, doesn't turn on). Reply with ONLY the single digit number."
+        
+        response = model.generate_content([
+            prompt,
+            {"mime_type": "image/jpeg", "data": image_bytes}
+        ])
+        
+        # Clean up the response to just get the digit
+        result_text = response.text.strip()
+        import re
+        match = re.search(r'[1-5]', result_text)
+        if match:
+            condition_level = match.group(0)
+            return jsonify({"conditionLevel": condition_level})
+        else:
+            return jsonify({"error": "AI could not determine the condition."}), 400
+            
+    except Exception as e:
+        print("AI Scan Error:", e)
+        return jsonify({"error": "Failed to process image with AI."}), 500
 
 # --- Endpoints ---
 

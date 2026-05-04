@@ -335,8 +335,9 @@ function renderShopInventoryList() {
                 <h4>${item.model}</h4>
                 <p>Condition: ${item.condition} • Battery: ${item.battery}%</p>
             </div>
-            <div class="shop-offer">
-                <span class="price">${displayPrice.toLocaleString()} ${state.currency}</span>
+            <div class="shop-offer" style="display: flex; gap: 8px; align-items: center;">
+                <span class="price" style="margin-right: 12px;">${displayPrice.toLocaleString()} ${state.currency}</span>
+                <button class="btn-outline btn-invoice" data-index="${state.mockInventory.indexOf(item)}" data-price="${displayPrice}" style="padding: 6px 12px; font-size: 0.85rem;">📄 Invoice</button>
                 <button class="btn-contact">Contact Seller</button>
             </div>
         `;
@@ -347,6 +348,86 @@ function renderShopInventoryList() {
     contactBtns.forEach(btn => {
         btn.addEventListener('click', () => alert('Contacting seller... (Demo feature)'));
     });
+
+    const invoiceBtns = document.querySelectorAll('.inventory-screen .btn-invoice');
+    invoiceBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = e.target.dataset.index;
+            const price = parseFloat(e.target.dataset.price);
+            const item = state.mockInventory[index];
+            generateInvoice(item, price, state.currency);
+        });
+    });
+}
+
+function generateInvoice(item, price, currency) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Header
+    doc.setFontSize(22);
+    doc.setTextColor(30, 64, 175); // A nice blue
+    doc.text("INVOICE", 105, 20, { align: "center" });
+    
+    // Invoice Meta
+    const invoiceId = "INV-" + Math.floor(10000 + Math.random() * 90000);
+    const date = new Date().toLocaleDateString();
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Invoice No: ${invoiceId}`, 150, 30);
+    doc.text(`Date: ${date}`, 150, 35);
+    
+    // Shop Details (Biller)
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont("helvetica", "bold");
+    doc.text("Billed By:", 20, 50);
+    
+    doc.setFont("helvetica", "normal");
+    doc.text(`Shop Name: ${state.user.name || "N/A"}`, 20, 58);
+    doc.text(`Location: ${state.user.address && state.user.address !== 'Not provided' ? state.user.address : "N/A"}`, 20, 64);
+    doc.text(`Contact: ${state.user.contact_info && state.user.contact_info !== 'Not provided' ? state.user.contact_info : "N/A"}`, 20, 70);
+    
+    // Line Divider
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, 80, 190, 80);
+    
+    // Item Details
+    doc.setFont("helvetica", "bold");
+    doc.text("Item Details", 20, 95);
+    
+    doc.setFont("helvetica", "normal");
+    doc.text("Description", 20, 105);
+    doc.text("Amount", 160, 105);
+    
+    doc.line(20, 108, 190, 108); // Header line
+    
+    // Item Row
+    doc.text(`${item.model}`, 20, 118);
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Condition: ${item.condition} | Battery: ${item.battery}%`, 20, 124);
+    
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${price.toLocaleString()} ${currency}`, 160, 118);
+    
+    doc.line(20, 130, 190, 130); // Footer line
+    
+    // Total
+    doc.setFont("helvetica", "bold");
+    doc.text("Total:", 120, 140);
+    doc.text(`${price.toLocaleString()} ${currency}`, 160, 140);
+    
+    // Footer
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(150, 150, 150);
+    doc.text("Thank you for your business!", 105, 280, { align: "center" });
+    
+    // Save PDF
+    doc.save(`${invoiceId}.pdf`);
 }
 
 // Logic Functions
@@ -549,6 +630,52 @@ function setupDamageStep() {
             renderResults();
         });
     });
+
+    // AI Auto-Scan Logic
+    const fileInput = document.getElementById('ai-condition-upload');
+    const indicator = document.getElementById('ai-scan-indicator');
+    const errorDiv = document.getElementById('ai-scan-error');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            errorDiv.style.display = 'none';
+            indicator.style.display = 'block';
+
+            const reader = new FileReader();
+            reader.onload = async (evt) => {
+                const base64Image = evt.target.result;
+                
+                try {
+                    const res = await fetch(`${API_BASE}/scan-condition`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: base64Image })
+                    });
+                    
+                    const data = await res.json();
+                    
+                    if (data.error) {
+                        errorDiv.textContent = data.error;
+                        errorDiv.style.display = 'block';
+                    } else if (data.conditionLevel) {
+                        // Find the corresponding option and select it automatically
+                        state.condition.damageLevel = parseInt(data.conditionLevel);
+                        indicator.style.display = 'none';
+                        renderResults();
+                    }
+                } catch (err) {
+                    errorDiv.textContent = "Connection error. Could not reach AI.";
+                    errorDiv.style.display = 'block';
+                } finally {
+                    indicator.style.display = 'none';
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 }
 
 async function fetchValuation() {

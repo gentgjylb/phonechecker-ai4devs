@@ -6,6 +6,8 @@
     <title>PhoneValue - Get Your Device's Worth</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Include jsPDF for Invoice Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header class="app-header">
@@ -110,6 +112,19 @@
 
             <div id="q-step-3" class="q-step">
                 <h3>Step 3: Physical Condition</h3>
+                
+                <div class="ai-scan-section" style="margin-bottom: 24px; padding: 20px; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--accent-purple); border-radius: 12px; text-align: center;">
+                    <p style="margin-top: 0; margin-bottom: 12px; color: var(--text-primary); font-weight: 500;">Not sure? Let AI scan your phone!</p>
+                    <label for="ai-condition-upload" class="btn-primary" style="display: inline-block; cursor: pointer; background: linear-gradient(90deg, var(--accent-purple), var(--accent-color)); box-shadow: var(--glow);">
+                        📷 Scan with AI
+                    </label>
+                    <input type="file" id="ai-condition-upload" accept="image/*" style="display: none;">
+                    <div id="ai-scan-indicator" style="display: none; margin-top: 12px; color: var(--accent-color); font-size: 0.9rem;">
+                        <span class="spinner" style="display: inline-block; animation: spin 1s linear infinite;">⏳</span> Scanning image... Please wait.
+                    </div>
+                    <div id="ai-scan-error" class="auth-error" style="display: none; margin-top: 12px;"></div>
+                </div>
+                
                 <div class="options-grid vertical" id="damage-options">
                     <button class="option-card" data-value="1">
                         <strong>Mint</strong>
